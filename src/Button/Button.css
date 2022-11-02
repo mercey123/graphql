@@ -1,0 +1,23 @@
+@import "../constants.css";
+
+.button {
+    box-sizing: border-box;
+    display: flex;
+    padding: 12px 28px;
+    width: fit-content;
+    height: 100%;
+
+    text-align: center;
+
+    font-size: 28px;
+    color: var(--additionalColor-secondary-dark);
+
+    user-select: none;
+    white-space: nowrap;
+
+    cursor: pointer;
+}
+
+.button:hover {
+    border-bottom: 2px solid #E7E7E7;
+}
