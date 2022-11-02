@@ -1,0 +1,24 @@
+.header {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 10px 120px;
+    /* gap: 20px; */
+
+    position: fixed;
+    width: 100%;
+    min-width: fit-content;
+    height: var(--headerHeight);
+    z-index: 1;
+
+    background-color: var(--additionalColor-primary-dark);
+}
+
+.header__buttons {
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 80px;
+
+    height: 100%;
+}

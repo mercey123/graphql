@@ -1,0 +1,33 @@
+@import "../constants.css";
+
+
+.main_container {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 40px;
+
+    position: relative;
+    top: var(--headerHeight);
+
+    padding: 0 120px;
+
+    width: 100%;
+}
+
+.profile_container {
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+
+    height: 100%;
+    padding: 40px 0 0 0;
+}
+
+.profile_container__nickname {
+    font-size: 48px;
+    color: var(--textColor-primary-dark);
+}

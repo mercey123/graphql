@@ -1,0 +1,52 @@
+@import "../constants.css";
+
+.transactions {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+    max-height: 512px;
+}
+
+.recent_activity {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+
+    padding: 20px 0;
+
+    overflow-y: scroll;
+
+    background: var(--additionalColor-primary-dark);
+}
+
+.transaction {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+}
+
+.transaction__item {
+    font-size: 20px;
+    width: 40%;
+    color: var(--textColor-primary-dark);
+}
+
+.level {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 40px 32px;
+    gap: 12px;
+
+    background: var(--additionalColor-secondary-dark);
+}
+
+.level__item {
+    font-size: 24px;
+    color: var(--textColor-secondary-dark);
+}

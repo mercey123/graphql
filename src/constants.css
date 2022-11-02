@@ -1,0 +1,15 @@
+:root {
+    --mainColor-dark: #202224;
+    --additionalColor-primary-dark: #2D2D2D;
+    --additionalColor-secondary-dark: #E7E7E7;
+    --textColor-primary-dark: #F0F1F2;
+    --textColor-secondary-dark: #000000;
+
+    --mainColor-light: #F3F7FF;
+    --additionalColor-primary-light: #EBEDEF;
+    --additionalColor-secondary-light: #FFFFFF;
+    --textColor-primary-light: #2C2C2C;
+    --textColor-secondary-light: #2C2C2C;
+
+    --headerHeight: 80px;
+}
