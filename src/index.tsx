@@ -4,7 +4,7 @@ import Header from './Header/Header';
 import Main_container from './Main_container/Main_container';
 import './index.css';
 import './normalize.css'
-import getUser from './query/query'
+import getUser from './query/search'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,4 +16,4 @@ root.render(
   </React.StrictMode>
 );
 
-getUser("Zewas123")
+console.log(getUser("Zewas"))
