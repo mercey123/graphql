@@ -16,4 +16,4 @@ root.render(
   </React.StrictMode>
 );
 
-console.log(getUser("Zewas"))
+console.log(getUser("AaEnnDeeErrEeEss"))
