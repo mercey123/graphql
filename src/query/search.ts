@@ -1,82 +1,67 @@
 import * as queries from "./queryConst";
 
-async function getUser(name: string) {
+export async function getUser(name: string) {
   let retName = await query(queries.nameQuery, { name })
   if (retName.user && retName.user.length > 0) {
-    console.log(`Ищу чела: ${retName.user[0].login}`)
-    let userData = await personalExp(retName.user[0].login)
-    userData.audits = await auditRatio(retName.user[0].login)
-    // console.log(userData)
-    return userData
+    return retName.user[0].login
   }
+
+  throw new Error('No such user')
 }
 
-async function allUsers() {
+export async function allUsers() {
   let data = await queryAll(queries.allStudents, {}, "user")
   let arr: any = []
+
   for (let user of data) {
-    user = user
-    let temp = await personalExp(user.login)
-    console.log({ [user.login]: temp.totalXp })
+    let temp = await personalTransactions(user.login)
     arr.push({ [user.login]: temp.totalXp })
   }
   return arr
 }
 
-async function personalExp(name: string) {
-  let tempArr: any[] = []
+export async function personalTransactions(name: string) {//: Promise<Object>
+  let transactionsArr: any[] = []
 
-  const variablesProgress = {
-    name,
-    regex: "\/johvi\/div-01(\/[0-9a-z-]*)?$",
-    offset: 0
-  }
-
-  let data = await queryAll(queries.progressQuery, variablesProgress, "progress")
-  // console.log(data)
+  let data = await queryAll(queries.progressQuery, { name, regex: queries.div01Regex, offset: 0 }, "progress")
 
   for (let element of data) {
-    let transactions = !queries.RUST_IDS.includes(element.object.id) ?
+    let transactionWrapper = !queries.RUST_IDS.includes(element.object.id) ?
       await queryAll(queries.amountQuery, { name, subject: element.object.id }, "transaction") :
       await queryAll(queries.rustAmountQuery, { ids: queries.RUST_IDS, name }, "transaction")
 
-    if (transactions.length === 0) {
+    if (transactionWrapper.length === 0) {
       continue
     }
-    let transaction = transactions[0]
+    let transaction = transactionWrapper[0]
 
-    tempArr.push(
+    transactionsArr.push(
       {
-        objectName: element.object.name,
-        timestamp: new Date(transaction.createdAt).getTime(),
-        amount: transaction.amount
+        objectName: element.object.name, //subject name
+        timestamp: new Date(transaction.createdAt).getTime(), //time of transaction
+        amount: transaction.amount //transaction amount
       }
     )
   }
-  // console.log(tempArr)
-
-
-  let currLevel = await query(queries.currLevelQuery, { name, regex: variablesProgress.regex })
-  currLevel = currLevel.transaction.length > 0 ? currLevel.transaction[0].amount : 0
+  // console.log(transactionsArr)
 
   return {
-    username: name,
-    totalXp: tempArr.reduce((a: number, b: any) => a + b.amount, 0),
-    level: currLevel,
-    transaction: tempArr,
-    audits: {}
+    transactions: transactionsArr,
+    totalXp: transactionsArr.reduce((a: number, b: any) => a + b.amount, 0)
   }
 }
 
-async function auditRatio(name: string) {
-  const vars = {
-    name,
-    offset: 0
-  }
+export async function currLevel(name: string): Promise<Number> {
+  let currLevel = await query(queries.currLevelQuery, { name, regex: queries.div01Regex })
+  currLevel = currLevel.transaction.length > 0 ? currLevel.transaction[0].amount : 0
 
-  let d = await queryAll(queries.auditQuery, vars, "transaction")
+  return currLevel
+}
 
-  d = d.map((currAudit) => {
+export async function auditRatio(name: string): Promise<any[]> {
+  let allAudits = await queryAll(queries.auditQuery, { name, offset: 0 }, "transaction")
+
+  allAudits = allAudits.map((currAudit) => {
     currAudit.objectName = currAudit.object.name
     delete currAudit.object
     return currAudit
@@ -92,10 +77,10 @@ async function auditRatio(name: string) {
 
   // console.log(up, down)
 
-  return d
+  return allAudits
 }
 
-async function query(operationsDoc: string, variables: Object) {
+export async function query(operationsDoc: string, variables: Object) {
   let result = await fetch(
     "https://01.kood.tech/api/graphql-engine/v1/graphql",
     {
@@ -113,7 +98,7 @@ async function query(operationsDoc: string, variables: Object) {
   return jsonRes.data
 }
 
-async function queryAll(searchQuery: string, variables: any, field: string) {
+export async function queryAll(searchQuery: string, variables: any, field: string) {
   let allData = []
 
   while (true) {
@@ -127,7 +112,3 @@ async function queryAll(searchQuery: string, variables: any, field: string) {
   }
   return allData
 }
-
-export default getUser
-
-allUsers()

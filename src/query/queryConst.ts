@@ -89,8 +89,10 @@ export const allStudents = `
 query ($offset: Int){
   user(
     where: {progresses: {campus: {_eq: "johvi"}, 
+    isDone: {_eq: true}, 
     path: {_regex: "/johvi/div-01(/[0-9a-z-]*)?$"}}},
-    offset: $offset
+    offset: $offset, 
+    order_by: {transactions_aggregate: {sum: {amount: desc}}}
   ) {
     login
   }
@@ -98,3 +100,5 @@ query ($offset: Int){
 `
 
 export const RUST_IDS = [100978, 3312]
+
+export const div01Regex = "\/johvi\/div-01(\/[0-9a-z-]*)?$"
