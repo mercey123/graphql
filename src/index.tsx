@@ -16,10 +16,12 @@ root.render(
   </React.StrictMode>
 );
 
-getUser("Rasmushytt")
+getUser("inquisitivetable")
 .catch((reas) => {console.log(reas)})
 .then(
   (username)=>{
+    if (username != null) {
+      
     console.log("name: " + username)
     currLevel(username).then(
       (level)=>{console.log("level: " + level)}
@@ -33,4 +35,7 @@ getUser("Rasmushytt")
       (trans)=>{console.log(trans)}
     )
   }
+  }
 )
+
+allUsers().then(console.log)
