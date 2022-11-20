@@ -31,10 +31,9 @@ progress(
     order_by: {updatedAt: asc}
   ) {
     object {
-      name
       id
+      name
     }
-    path
   }
 }
 `
@@ -47,8 +46,22 @@ query ($subject: Int, $name: String, $offset: Int = 0){
     where: {object: {id: {_eq: $subject}}, user: {login: {_eq: $name}}, type: {_eq: "xp"}}
     limit: 1
     offset: $offset
+    ) {
+      amount
+    createdAt
+  }
+}
+`
+
+export const amountQV2 = `
+query($name: String, $offset: Int = 0, $ids: [Int]) {
+  transaction(
+    where: { object: { id: { _in: $ids } }, user: { login: { _eq: $name } }, type: { _eq: "xp" } }
+    offset: $offset
+    order_by: { createdAt: desc, amount: desc_nulls_last }
   ) {
     amount
+    objectId
     createdAt
   }
 }
@@ -99,19 +112,6 @@ query ($offset: Int = 0){
     order_by: {transactions_aggregate: {sum: {amount: desc}}}
   ) {
     login
-  }
-}
-`
-
-export const amountQV2 = `
-query($name: String, $offset: Int = 0, $ids: [Int]) {
-  transaction(
-    where: { object: { id: { _in: $ids } }, user: { login: { _eq: $name } }, type: { _eq: "xp" } }
-    offset: $offset
-    order_by: { createdAt: desc, amount: desc_nulls_last }
-  ) {
-    amount
-    objectId
   }
 }
 `
