@@ -1,5 +1,5 @@
 import React from 'react';
-import './Transactions.css';
+import './transactions.css';
 
 const buba = {
     transactions: [

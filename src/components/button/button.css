@@ -1,4 +1,4 @@
-@import "../constants.css";
+@import "/src/constants.css";
 
 .button {
     box-sizing: border-box;

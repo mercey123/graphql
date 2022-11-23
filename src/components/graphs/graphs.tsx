@@ -1,5 +1,5 @@
 import React from 'react';
-import './Graphs.css';
+import './graphs.css';
 
 class Graph extends React.Component {
     constructor(props: Object) {

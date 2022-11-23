@@ -1,4 +1,4 @@
-@import "../constants.css";
+@import "/src/constants.css";
 
 .search_bar {
     box-sizing: border-box;

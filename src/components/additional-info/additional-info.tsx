@@ -1,7 +1,7 @@
 import React from 'react';
-import './Additional_info.css';
+import './additional-info.css';
 
-class Additional_info extends React.Component {
+class AdditionalInfo extends React.Component {
     // constructor(props: Object) {
     //     super(props);
     // }
@@ -18,4 +18,4 @@ class Additional_info extends React.Component {
     }
 }
 
-export default Additional_info
+export default AdditionalInfo

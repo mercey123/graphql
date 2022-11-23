@@ -1,4 +1,4 @@
-import Button from '../Button/Button';
+import Button from '../button/button';
 import SearchBar from '../search-bar/search-bar';
 import React from 'react';
 import './header.css';
@@ -8,8 +8,8 @@ function Header() {
 		<div className="header">
 			<SearchBar />
 			<div className='header__buttons'>
-				<Button value={"Светлая тема"} />
-				<Button value={"Темная тема"} />
+				<Button buttonText={"Светлая тема"} />
+				<Button buttonText={"Темная тема"} />
 			</div>
 		</div>
 	);
