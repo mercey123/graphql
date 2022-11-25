@@ -1,16 +1,17 @@
 import * as queries from "./queryConst";
 
-export async function query(operationsDoc: string, variables: Object): Promise<any> {
+async function query(searchQuery: string, variables: Object): Promise<any> {
   let result = await fetch(
     "https://01.kood.tech/api/graphql-engine/v1/graphql",
     {
       method: "POST",
       body: JSON.stringify({
-        query: operationsDoc,
+        query: searchQuery,
         variables: variables,
       })
     }
   )
+
   let jsonRes = await result.json()
   if (jsonRes.errors) {
     return undefined
@@ -18,7 +19,7 @@ export async function query(operationsDoc: string, variables: Object): Promise<a
   return jsonRes.data
 }
 
-export async function queryAll(searchQuery: string, variables: any, field: string): Promise<any[]> {
+async function queryAll(searchQuery: string, variables: any, field: string): Promise<any[]> {
   let allData = []
 
   while (true) {
@@ -33,8 +34,8 @@ export async function queryAll(searchQuery: string, variables: any, field: strin
   return allData
 }
 
-export async function transactionsAndXp(name: string, onlyTotalXp: boolean): Promise<{
-  transactions?: {
+export async function transactionsAndXp(name: string, onlyTotalXp: boolean = false): Promise<{
+  transactions: {
     amount: number;
     timestamp: number;
     objectName: string;
@@ -46,70 +47,67 @@ export async function transactionsAndXp(name: string, onlyTotalXp: boolean): Pro
   let nameById: { [id: string]: string } = {}
 
   for (let { object } of data) {
-    if (object.id) {
-      if (queries.RUST_IDS.includes(object.id)) {
-        objectIds = objectIds.concat(queries.RUST_IDS)
-        queries.RUST_IDS.forEach(rustId => nameById[rustId] = object.name)
-        continue
-      }
-      nameById[object.id] = object.name
-      objectIds.push(object.id)
+    if (!object.id) {
+      continue
     }
+
+    if (queries.RUST_IDS.includes(object.id)) {
+      objectIds = objectIds.concat(queries.RUST_IDS)
+      queries.RUST_IDS.forEach(rustId => nameById[rustId] = object.name)
+      continue
+    }
+    nameById[object.id] = object.name
+    objectIds.push(object.id)
   }
 
-  let transData = await queryAll(queries.amountQV2, { name, offset: 0, ids: objectIds }, "transaction")
+  let transData: { amount: number, objectId: string, createdAt: string }[] =
+    await queryAll(queries.amountQuery, { name, offset: 0, ids: objectIds }, "transaction")
   let objectXp: { [id: string]: number } = {}
   let transactions: { amount: number, timestamp: number, objectName: string }[] = []
 
-  transData.forEach(
-    ({ amount, objectId, createdAt }) => {
-      if (!objectXp[objectId]) {
-        objectXp[objectId] = amount
-
-        if (!onlyTotalXp) {
-          transactions.push(
-            {
-              amount,
-              timestamp: new Date(createdAt).getTime(),
-              objectName: nameById[objectId]
-            }
-          )
-        }
-      }
+  for (const { amount, objectId, createdAt } of transData) {
+    if (objectXp[objectId]) {
+      continue
     }
-  )
+    objectXp[objectId] = amount
+
+    if (onlyTotalXp) {
+      continue
+    }
+
+    transactions.push(
+      {
+        amount,
+        timestamp: new Date(createdAt).getTime(),
+        objectName: nameById[objectId]
+      }
+    )
+  }
+
   let totalXp = Object.values(objectXp).reduce((a: number, b: number) => a + b, 0)
   transactions.sort((a, b) => b.timestamp - a.timestamp)
 
-  if (onlyTotalXp) return {
-    totalXp: totalXp
-  }
   return {
-    transactions: transactions,
-    totalXp: totalXp
+    transactions,
+    totalXp
   }
 }
 
 export async function getUser(name: string): Promise<string> {
   let retName: { user: { login: string }[] } = await query(queries.nameQuery, { name })
-  if (retName.user && retName.user.length > 0) {
-    return retName.user[0].login
-  }
+  if (retName.user && retName.user.length > 0) return retName.user[0].login
 
   throw new Error('No such user')
 }
 
 export async function currLevel(name: string): Promise<number> {
-  let currLevel = await query(queries.currLevelQuery, { name, regex: queries.div01Regex })
-  currLevel = currLevel.transaction.length > 0 ? currLevel.transaction[0].amount : 0
+  let currLevel: { transaction: { amount: number }[] } = await query(queries.currLevelQuery, { name, regex: queries.div01Regex })
 
-  return currLevel
+  return currLevel.transaction.length > 0 ? currLevel.transaction[0].amount : 1
 }
 
-export async function allUsers() {
-  let arr: Promise<
-    (string | number)[]
-  >[] = []
+export async function allUsers(): Promise<{ [user: string]: number }> {
+  let arr: Promise<(string | number)[]>[] = []
 
   for (let user of queries.batch01) {
     let userXp = transactionsAndXp(user, true).then(res => [user, res.totalXp])
@@ -120,14 +118,8 @@ export async function allUsers() {
 }
 
 export async function auditRatio(name: string): Promise<{ amount: number, createdAt: number, objectName: string, type: string }[]> {
-  let allAudits = await queryAll(queries.auditQuery, { name, offset: 0 }, "transaction")
+  let allAudits: { object: { name: string }, amount: number, type: string, createdAt: string }[] =
+    await queryAll(queries.auditQuery, { name, offset: 0 }, "transaction")
 
-  allAudits = allAudits.map((currAudit) => {
-    currAudit.objectName = currAudit.object.name
-    delete currAudit.object
-    currAudit.createdAt = new Date(currAudit.createdAt).getTime()
-    return currAudit
-  })
-
-  return allAudits
+  return allAudits.map(({ object: { name }, amount, type, createdAt }) => ({ amount, createdAt: new Date(createdAt).getTime(), objectName: name, type }))
 }
