@@ -9,7 +9,7 @@ interface UsernameContext {
 }
 
 const defaultValue: UsernameContext = {
-    username: "Zewas",
+    username: "",
     setUser: () => { },
 };
 

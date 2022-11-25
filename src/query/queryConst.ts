@@ -1,4 +1,5 @@
 export const URL = "https://01.kood.tech/api/graphql-engine/v1/graphql";
+
 export const nameQuery =
   `
 query ($name: String) {
@@ -38,22 +39,7 @@ progress(
 }
 `
 
-export const amountQuery =
-  ` 
-query ($subject: Int, $name: String, $offset: Int = 0){
-  transaction(
-    order_by: {amount: desc_nulls_last}
-    where: {object: {id: {_eq: $subject}}, user: {login: {_eq: $name}}, type: {_eq: "xp"}}
-    limit: 1
-    offset: $offset
-    ) {
-      amount
-    createdAt
-  }
-}
-`
-
-export const amountQV2 = `
+export const amountQuery = `
 query($name: String, $offset: Int = 0, $ids: [Int]) {
   transaction(
     where: { object: { id: { _in: $ids } }, user: { login: { _eq: $name } }, type: { _eq: "xp" } }
@@ -67,27 +53,13 @@ query($name: String, $offset: Int = 0, $ids: [Int]) {
 }
 `
 
-export const rustAmountQuery = `
-query ($ids: [Int!], $name: String, $offset: Int = 0) {
-  transaction(
-    order_by: {amount: desc_nulls_last}
-    where: {objectId: {_in: $ids}, user: {login: {_eq: $name}}, type: {_eq: "xp"}}
-    limit: 1
-    offset: $offset
-  ) {
-    amount
-    createdAt
-  }
-}
-`
-
 export const auditQuery = `
-query ($offset: Int = 0, $name: String) {
+query ($offset: Int = 0, $name: String = "") {
   transaction(
-    where: {type: {_in: ["up", "down"]}, 
-    user: {login: {_eq: $name}}}, 
+    where: {type: {_in: ["up", "down"]}, user: {login: {_eq: $name}}}
     offset: $offset
-    ) {
+    order_by: {createdAt: desc_nulls_last}
+  ) {
     amount
     type
     createdAt
@@ -97,10 +69,6 @@ query ($offset: Int = 0, $name: String) {
   }
 }
 `
-
-interface User { //interface for allStudents return
-  [username: string]: number,
-}
 
 export const allStudents = `
 query ($offset: Int = 0){

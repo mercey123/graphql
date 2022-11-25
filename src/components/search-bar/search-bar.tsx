@@ -20,7 +20,7 @@ export default function SearchBar() {
 				className="search_bar__input"
 				type="text"
 				placeholder={"Enter your nickname..."}
-				onChange={debounce(inputHandler, 500)}
+				onChange={debounce(inputHandler, 1000)}
 			/>
 		</div>
 	);

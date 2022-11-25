@@ -1,69 +1,43 @@
 import React from 'react';
 import './transactions.css';
 
-const buba = {
-    transactions: [
-        {
-            name: "make-your-game-score-handling",
-            date: "Oct 28, 2022 at 3:21 pm",
-        },
-        {
-            name: "real-time-forum",
-            date: "Oct 24, 2022 at 6:14 pm",
-        },
-        {
-            name: "Rust-piscine",
-            date: "Oct 7, 2022 at 4:12 pm",
-        },
-        {
-            name: "atm-management-system",
-            date: "Jul 25, 2022 at 7:07 pm",
-        },
-        {
-            name: "make-your-game",
-            date: "Jul 7, 2022 at 12:40 pm",
-        },
-        {
-            name: "forum",
-            date: "Jun 15, 2022 at 9:20 pm",
-        },
-
-    ]
+export interface TransactionsProps {
+    totalXp: number,
+    level: number,
+    transactions: {
+        amount: number;
+        timestamp: number;
+        objectName: string;
+    }[]
 }
 
-class Transactions extends React.Component {
-    constructor(props: Object) {
-        super(props);
-        this.state
+function Transactions({ totalXp, level, transactions }: TransactionsProps) {
+    let ans = ""
+
+    if (totalXp / 1000000 > 1) {
+        ans = (totalXp / 1000000).toFixed(2) + " Mb"
+    } else if (totalXp / 1000 > 1) {
+        ans = (totalXp / 1000).toFixed(2) + " Kb"
+    } else {
+        ans = totalXp + " b"
     }
 
-    renderTransactions(trans: any) {
-        return (
-            <div className='transaction'>
-                <div className='transaction__item'>{trans.name}</div>
-                <div className='transaction__item'>{trans.date}</div>
+    return (
+        <div className='transactions'>
+            <div className='level'>
+                <div className='level__item'>Total xp = {ans}</div>
+                <div className='level__item'>Level {level}</div>
             </div>
-        )
-    }
-
-    render() {
-        return (
-            <div className='transactions'>
-                <div className='level'>
-                    <div className='level__item'>Total xp = 800kB</div>
-                    <div className='level__item'>Level 99</div>
-                </div>
-                <div className='recent_activity'>
-                    {this.renderTransactions(buba.transactions[0])}
-                    {this.renderTransactions(buba.transactions[1])}
-                    {this.renderTransactions(buba.transactions[2])}
-                    {this.renderTransactions(buba.transactions[3])}
-                    {this.renderTransactions(buba.transactions[4])}
-                    {this.renderTransactions(buba.transactions[5])}
-                </div>
+            <div className='recent_activity'>
+                {transactions.map((trans, index) => (
+                    <div className='transaction' key={index}>
+                        <div className='transaction__item'>{trans.objectName}</div>
+                        <div className='transaction__item transaction__item_right'>{new Date(trans.timestamp).toLocaleString()}</div>
+                    </div>
+                ))}
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Transactions;
