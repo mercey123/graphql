@@ -4,34 +4,27 @@ import '../graphs/graphs.css'
 import Transactions, { TransactionsProps } from '../transactions/transactions'
 import Graph from '../graphs/graphs'
 import { UserContext } from '../app/app';
-import { auditRatio, currLevel, getUser, transactionsAndXp } from '../../query/search';
+import { auditRatio, currLevel, transactionsAndXp } from '../../query/search';
 
 function MainContainer() {
     const { username } = useContext(UserContext)
 
-    const [parsedUsername, setParsedUsername] = useState(username)
     const [audits, setAudits] = useState<{ amount: number; createdAt: number; objectName: string; type: string; }[]>([])
     const [trans, setTrans] = useState<TransactionsProps>({ totalXp: 0, level: 0, transactions: [] })
 
     useEffect(() => {
-        getUser(username)
-            .then(async user => {
-                let auditArr = await auditRatio(user)
-                let { transactions, totalXp } = await transactionsAndXp(user, false)
-                let level = await currLevel(user)
+        auditRatio(username).then(auditArr => setAudits(auditArr))
 
-                let trans = { totalXp, transactions, level }
-
-                setParsedUsername(user)
-                setAudits(auditArr)
-                setTrans(trans)
-            })
+        transactionsAndXp(username, false).then(async ({ transactions, totalXp }) => {
+            let level = await currLevel(username)
+            setTrans({ totalXp, transactions, level })
+        })
     }, [username])
 
     return (
         <div className="main_container">
             <div className="profile_container">
-                <div className="profile_container__nickname">{parsedUsername}</div>
+                <div className="profile_container__nickname">{username}</div>
                 {/* <AdditionalInfo value={parsedUsername} /> */}
                 <Transactions {...trans} />
             </div>

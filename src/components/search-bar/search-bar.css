@@ -6,13 +6,4 @@
     width: 100%;
     min-width: 300px;
 
-    background: var(--additionalColor-secondary-dark);
-}
-
-.search_bar__input {
-    all: unset;
-
-    padding: 12px 20px;
-
-    width: 100%;
 }
