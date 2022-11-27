@@ -93,11 +93,11 @@ export async function transactionsAndXp(name: string, onlyTotalXp: boolean = fal
   }
 }
 
-export async function getUser(name: string): Promise<string> {
-  let retName: { user: { login: string }[] } = await query(queries.nameQuery, { name })
-  if (retName.user && retName.user.length > 0) return retName.user[0].login
+export async function getUsersBy(name: string): Promise<string[]> {
+  let retName: { user: { login: string }[] } = await query(queries.likeNameQuery, { username: name + '%' })
+  if (retName.user && retName.user.length > 0) return retName.user.map(({ login }) => login)
 
-  throw new Error('No such user')
+  return []
 }
 
 export async function currLevel(name: string): Promise<number> {

@@ -1,16 +1,20 @@
 export const URL = "https://01.kood.tech/api/graphql-engine/v1/graphql";
 
-export const nameQuery =
-  `
-query ($name: String) {
-  user(where: {login: {_eq: $name}}) {
+export const likeNameQuery = `
+query ($offset: Int = 0, $username: String = "") {
+  user(
+    where: {progresses: {campus: {_eq: "johvi"}, 
+    isDone: {_eq: true}, 
+    path: {_regex: "/johvi/div-01(/[0-9a-z-]*)?$"}}, 
+    login: {_ilike: $username}}
+    limit: 10
+  ) {
     login
   }
 }
 `
 
-export const currLevelQuery =
-  `
+export const currLevelQuery = `
 query ($name: String, $regex: String = "", $offset: Int = 0){
   transaction(
     where: { user: { login: { _eq: $name } }, type: { _eq: "level" }, path: { _regex: $regex } }
@@ -23,8 +27,7 @@ query ($name: String, $regex: String = "", $offset: Int = 0){
 }
 `
 
-export const progressQuery =
-  `
+export const progressQuery = `
 query ($name: String, $regex: String = "", $offset: Int = 0) {
 progress(
     where: {path: {_regex: $regex}, isDone: {_eq: true}, user: {login: {_eq: $name}}}
