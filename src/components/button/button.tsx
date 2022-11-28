@@ -2,12 +2,16 @@ import React from 'react';
 import './button.css';
 
 interface ButtonProps {
-  buttonText: string
+  buttonText: string;
+  handler: () => void
 }
 
-function Button({ buttonText }: ButtonProps) {
+function Button({ buttonText, handler }: ButtonProps) {
   return (
-    <div className="button">
+    <div
+      className="button"
+      onClick={handler}
+    >
       {buttonText}
     </div>
   );

@@ -20,8 +20,10 @@ export default function App() {
 
     return (
         <UserContext.Provider value={{ username, setUser }}>
-            <Header />
-            <MainContainer />
+            <div>
+                <Header />
+                <MainContainer />
+            </div>
         </UserContext.Provider>
     )
 }
