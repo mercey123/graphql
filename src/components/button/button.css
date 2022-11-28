@@ -10,7 +10,7 @@
     text-align: center;
 
     font-size: 28px;
-    color: var(--additionalColor-secondary-dark);
+    color: var(--textColor-primary);
 
     user-select: none;
     white-space: nowrap;
@@ -19,5 +19,5 @@
 }
 
 .button:hover {
-    border-bottom: 2px solid #E7E7E7;
+    border-bottom: 2px solid var(--textColor-primary);
 }

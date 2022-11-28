@@ -19,7 +19,7 @@
 
     overflow-y: scroll;
 
-    background: var(--additionalColor-primary-dark);
+    background: var(--additionalColor-primary);
 }
 
 .transaction {
@@ -32,7 +32,7 @@
 .transaction__item {
     font-size: 20px;
     width: 40%;
-    color: var(--textColor-primary-dark);
+    color: var(--textColor-primary);
 }
 
 .transaction__item_right {
@@ -47,10 +47,10 @@
     padding: 40px 32px;
     gap: 12px;
 
-    background: var(--additionalColor-secondary-dark);
+    background: var(--additionalColor-secondary);
 }
 
 .level__item {
     font-size: 24px;
-    color: var(--textColor-secondary-dark);
+    color: var(--textColor-secondary);
 }

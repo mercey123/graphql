@@ -13,3 +13,19 @@
 
     --headerHeight: 80px;
 }
+
+.light-theme {
+    --mainColor: var(--mainColor-light);
+    --additionalColor-primary: var(--additionalColor-primary-light);
+    --additionalColor-secondary: var(--additionalColor-secondary-light);
+    --textColor-primary: var(--textColor-primary-light);
+    --textColor-secondary: var(--textColor-secondary-light);
+}
+
+.dark-theme {
+    --mainColor: var(--mainColor-dark);
+    --additionalColor-primary: var(--additionalColor-primary-dark);
+    --additionalColor-secondary: var(--additionalColor-secondary-dark);
+    --textColor-primary: var(--textColor-primary-dark);
+    --textColor-secondary: var(--textColor-secondary-dark);
+}

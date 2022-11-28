@@ -11,7 +11,7 @@
     height: var(--headerHeight);
     z-index: 1;
 
-    background-color: var(--additionalColor-primary-dark);
+    background-color: var(--additionalColor-primary);
 }
 
 .header__buttons {

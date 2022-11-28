@@ -3,13 +3,32 @@ import SearchBar from '../search-bar/search-bar';
 import React from 'react';
 import './header.css';
 
+const darkTheme = () => {
+	document.body.className = 'dark-theme'
+	localStorage.setItem('theme', 'dark')
+}
+
+const lightTheme = () => {
+	document.body.className = 'light-theme'
+	localStorage.setItem('theme', 'light')
+}
+
 function Header() {
+	const theme = localStorage.getItem('theme')
+
+	if (!theme || theme === 'dark') {
+		darkTheme()
+	}
+	if (theme === 'light') {
+		lightTheme()
+	}
+
 	return (
 		<div className="header">
 			<SearchBar />
 			<div className='header__buttons'>
-				<Button buttonText={"Светлая тема"} />
-				<Button buttonText={"Темная тема"} />
+				<Button buttonText={"Светлая тема"} handler={lightTheme} />
+				<Button buttonText={"Темная тема"} handler={darkTheme} />
 			</div>
 		</div>
 	);

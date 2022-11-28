@@ -11,12 +11,12 @@
 
     padding: 20px 0;
 
-    background: var(--additionalColor-secondary-dark);
+    background: var(--additionalColor-secondary);
 }
 
 .additional_info__currentXp {
     font-size: 36px;
-    color: var(--textColor-secondary-dark);
+    color: var(--textColor-secondary);
 }
 
 .progress {
@@ -25,7 +25,7 @@
     height: 30px;
     padding: 4px;
 
-    background: var(--additionalColor-primary-dark);
+    background: var(--additionalColor-primary);
 }
 
 .progress__bar {
