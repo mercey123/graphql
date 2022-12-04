@@ -117,9 +117,9 @@ export async function allUsers(): Promise<{ [user: string]: number }> {
   return Object.fromEntries(promes)
 }
 
-export async function auditRatio(name: string): Promise<{ amount: number, createdAt: number, objectName: string, type: string }[]> {
+export async function auditRatio(name: string): Promise<{ objectName: string, amount: number, timestamp: number, type: string }[]> {
   let allAudits: { object: { name: string }, amount: number, type: string, createdAt: string }[] =
     await queryAll(queries.auditQuery, { name, offset: 0 }, "transaction")
 
-  return allAudits.map(({ object: { name }, amount, type, createdAt }) => ({ amount, createdAt: new Date(createdAt).getTime(), objectName: name, type }))
+  return allAudits.map(({ object: { name }, amount, type, createdAt }) => ({ amount, timestamp: new Date(createdAt).getTime(), objectName: name, type }))
 }
