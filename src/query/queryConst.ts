@@ -61,7 +61,7 @@ query ($offset: Int = 0, $name: String = "") {
   transaction(
     where: {type: {_in: ["up", "down"]}, user: {login: {_eq: $name}}}
     offset: $offset
-    order_by: {createdAt: desc_nulls_last}
+    order_by: {createdAt: asc_nulls_last}
   ) {
     amount
     type
@@ -89,7 +89,7 @@ query ($offset: Int = 0){
 
 export const RUST_IDS = [100978, 3312]
 
-export const div01Regex = "\/johvi\/div-01(\/[0-9a-z-]*)?$"
+export const div01Regex = "/johvi/div-01(/[0-9a-z-]*)?$"
 
 export const batch01 = [
   "AaEnnDeeErrEeEss",

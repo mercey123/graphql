@@ -15,3 +15,11 @@
 
     background: var(--additionalColor-primary);
 }
+
+.graph__axes{
+    color: var(--textColor-primary);
+}
+
+.graph__line{
+    color: var(--textColor-primary);
+}
