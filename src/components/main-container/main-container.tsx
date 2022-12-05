@@ -4,7 +4,8 @@ import '../graphs/graphs.css'
 import Transactions, { TransactionsProps } from '../transactions/transactions'
 import { Graph } from '../graphs/graphs'
 import { UserContext } from '../app/app';
-import { auditRatio, currLevel, transactionsAndXp } from '../../query/search';
+import { allUsers, auditRatio, currLevel, transactionsAndXp } from '../../query/search';
+import DistributionChart from '../graphs/distribution-chart';
 
 export interface GraphData {
     amount: number,
@@ -19,9 +20,9 @@ function MainContainer() {
     const [auditsData, setAudits] = useState<GraphData[]>([])
     const [transactionsData, setTransactions] = useState<GraphData[]>([])
     const [trans, setTrans] = useState<TransactionsProps>({ totalXp: 0, level: 0, transactions: [] })
+    const [users, setUsers] = useState<{ username: string, totalXp: number }[]>([])
 
     useEffect(() => {
-        auditRatio(username).then(auditArr => setAudits(auditDataHandler(auditArr)))
         transactionsAndXp(username, false).then(async ({ transactions, totalXp }) => {
             let level = await currLevel(username)
             let graphTrans = transactions.slice()
@@ -29,7 +30,11 @@ function MainContainer() {
 
             setTrans({ totalXp, transactions, level })
             setTransactions(transactionDataHandler(graphTrans))
+
+            allUsers().then((res) => setUsers(res))
         })
+
+        auditRatio(username).then(auditArr => setAudits(auditDataHandler(auditArr)))
     }, [username])
 
 
@@ -37,13 +42,13 @@ function MainContainer() {
         <div className="main_container">
             <div className="profile_container">
                 <div className="profile_container__nickname">{username}</div>
-                {/* <AdditionalInfo value={parsedUsername} /> */}
+                {/* <AdditionalInfo value={username} /> */}
                 <Transactions {...trans} />
             </div>
             <div className='graphs_container'>
-                {/* <Graph /> */}
                 <Graph data={auditsData} title={"Audits"} />
                 <Graph data={transactionsData} title={"Your progress"} />
+                <DistributionChart users={users} />
             </div>
         </div>
     )
