@@ -48,7 +48,7 @@ function MainContainer() {
             <div className='graphs_container'>
                 <Graph data={auditsData} title={"Audits"} />
                 <Graph data={transactionsData} title={"Your progress"} />
-                <DistributionChart users={users} />
+                <DistributionChart users={users} title={"Distribution students per xp"} />
             </div>
         </div>
     )
