@@ -106,15 +106,15 @@ export async function currLevel(name: string): Promise<number> {
   return currLevel.transaction.length > 0 ? currLevel.transaction[0].amount : 1
 }
 
-export async function allUsers(): Promise<{ [user: string]: number }> {
-  let arr: Promise<(string | number)[]>[] = []
+export async function allUsers(): Promise<{ username: string, totalXp: number }[]> {
+  let promiseArr: Promise<{ username: string, totalXp: number }>[] = []
 
-  for (let user of queries.batch01) {
-    let userXp = transactionsAndXp(user, true).then(res => [user, res.totalXp])
-    arr.push(userXp)
+  for (let username of queries.batch01) {
+    let user = transactionsAndXp(username, true).then(res => ({ username, totalXp: res.totalXp }))
+    promiseArr.push(user)
   }
-  let promes = await Promise.all(arr)
-  return Object.fromEntries(promes)
+
+  return await Promise.all(promiseArr)
 }
 
 export async function auditRatio(name: string): Promise<{ objectName: string, amount: number, timestamp: number, type: string }[]> {
