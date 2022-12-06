@@ -16,11 +16,11 @@ const lightTheme = () => {
 function Header() {
 	const theme = localStorage.getItem('theme')
 
-	if (!theme || theme === 'light') {
-		lightTheme()
-	}
-	if (theme === 'dark') {
+	if (!theme || theme === 'dark') {
 		darkTheme()
+	}
+	if (theme === 'light') {
+		lightTheme()
 	}
 
 	return (

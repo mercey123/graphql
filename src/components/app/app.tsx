@@ -16,7 +16,7 @@ const defaultValue: UsernameContext = {
 export const UserContext = createContext(defaultValue)
 
 export default function App() {
-    const [username, setUser] = useState("Zewas")
+    const [username, setUser] = useState("mercey123")
 
     return (
         <UserContext.Provider value={{ username, setUser }}>
