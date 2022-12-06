@@ -47,7 +47,7 @@ function DistributionChart({ users, title }: DistributionProps) {
             .append("div")
             .style("opacity", 0)
             .attr("class", "graph__tooltip")
-            .style("left", width + "px")
+            .style("right", 0)
             .style('top', 0)
 
         // tooltip show and update event

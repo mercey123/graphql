@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import './main-container.css';
 import '../graphs/graphs.css'
 import Transactions, { TransactionsProps } from '../transactions/transactions'
-import { Graph } from '../graphs/graphs'
+import { LineChart } from '../graphs/graphs'
 import { UserContext } from '../app/app';
 import { allUsers, auditRatio, currLevel, transactionsAndXp } from '../../query/search';
 import DistributionChart from '../graphs/distribution-chart';
@@ -46,8 +46,8 @@ function MainContainer() {
                 <Transactions {...trans} />
             </div>
             <div className='graphs_container'>
-                <Graph data={auditsData} title={"Audits"} />
-                <Graph data={transactionsData} title={"Your progress"} />
+                <LineChart data={auditsData} title={"Audits"} />
+                <LineChart data={transactionsData} title={"Your progress"} />
                 <DistributionChart users={users} title={"Distribution students per xp"} />
             </div>
         </div>
@@ -65,6 +65,7 @@ function auditDataHandler(unsortedInput: GraphData[]): GraphData[] {
             amount: graphTotal,
             timestamp,
             objectName,
+            type
         }
     })
 }

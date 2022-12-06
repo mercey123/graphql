@@ -16,19 +16,19 @@ const lightTheme = () => {
 function Header() {
 	const theme = localStorage.getItem('theme')
 
-	if (!theme || theme === 'dark') {
-		darkTheme()
-	}
-	if (theme === 'light') {
+	if (!theme || theme === 'light') {
 		lightTheme()
+	}
+	if (theme === 'dark') {
+		darkTheme()
 	}
 
 	return (
 		<div className="header">
 			<SearchBar />
 			<div className='header__buttons'>
-				<Button buttonText={"Светлая тема"} handler={lightTheme} />
-				<Button buttonText={"Темная тема"} handler={darkTheme} />
+				<Button buttonText={"Ligth theme"} handler={lightTheme} />
+				<Button buttonText={"Dark theme"} handler={darkTheme} />
 			</div>
 		</div>
 	);
