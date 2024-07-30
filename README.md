@@ -1,4 +1,4 @@
-# graphql
+# stats-visualizer
 
 This is a small project to visualize information about students in Johvi campus. You can access this project from [website](https://mercey123-graphql.netlify.app/).
 
