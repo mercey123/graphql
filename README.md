@@ -5,8 +5,6 @@ This is a small project to visualize information about students in Johvi campus.
 Project created with `React+TypeScript` for more efficiency and interactiveness, `react-select` for fast autocomplete search and `d3` for visually pleasing graphs.<br>
 All graphs are interactive, so you can see detailed information.
 
-Here you can check [audit questions](https://beta.01-edu.org/git/root/public/src/branch/master/subjects/graphql/audit) for that project
-
 ## Feautures
 
 Profiles have:
